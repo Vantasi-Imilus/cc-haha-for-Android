@@ -13,7 +13,7 @@
 
 ---
 
-## 二、八条硬规则（违反的 PR 会被直接关闭）
+## 二、八条硬规则（违反的 PR 如果被我看到会被直接关闭）
 
 1. **不得修改 `runtime/upstream/` 中的任何文件。**
    所有适配必须写在 `runtime/compat/` 或 `runtime/build/build.mjs` 中。
