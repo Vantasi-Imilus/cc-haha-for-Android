@@ -1,0 +1,140 @@
+# ============================================================================
+# cc-haha Android · .gitignore
+# ----------------------------------------------------------------------------
+# 使用方式：复制到**仓库根目录**（与 README.md 同级）：
+#     cp docs/open-source/templates/.gitignore .gitignore
+# 顺序要求：先落本文件 → 再 git init → 再 git add
+# 设计原则：凡可由「源码 + 脚本 + 版本号」重新生成者，一律不入库。
+#
+# ⚠️ 语法纪律：git 只在**行首**识别 # 为注释，行尾注释会使整条规则失效。
+#    本文件所有注释均独占一行，新增规则时请遵守。
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# 1. 构建产物（本工程主体积，约 7GB）
+# ---------------------------------------------------------------------------
+
+# 工具链缓存与 staging（实测 2.8G）
+/build/
+
+# JDK / Android SDK / Gradle（实测 1.4G，贡献者自备）
+/build-env/
+
+# Release 产物暂存
+/dist/
+
+/android/build/
+/android/app/build/
+/android/.gradle/
+/.gradle/
+
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+output-metadata.json
+
+# ---------------------------------------------------------------------------
+# 2. 运行时与上游副本（可由脚本重建）
+# ---------------------------------------------------------------------------
+
+runtime/node_modules/
+
+# esbuild 打包输出
+runtime/dist/
+
+# ★ 上游源码副本：用 tools/fetch-upstream.mjs 重建（同时满足合规方案 B）
+runtime/upstream/
+
+runtime/**/*.tsbuildinfo
+runtime/**/.cache/
+
+# 注意：runtime/build/build.mjs 是核心原创资产，**必须入库**，
+#      因此此处不得出现 runtime/build/ 规则。
+
+# ---------------------------------------------------------------------------
+# 3. 预置二进制资产（346MB，走 Release 附件或脚本重建）
+# ---------------------------------------------------------------------------
+
+android/app/src/main/assets/*.pkg
+android/app/src/main/assets/*.tar.gz
+android/app/src/main/assets/*.tar
+android/app/src/main/jniLibs/**/*.so.tmp
+
+# ---------------------------------------------------------------------------
+# 4. 凭证与签名（★ 最高优先级，任何情况下不得入库）
+# ---------------------------------------------------------------------------
+
+.env
+.env.*
+!.env.example
+
+# Android SDK 路径 + 可能的签名配置
+local.properties
+
+*.keystore
+*.jks
+*.p12
+*.pem
+*.key
+*.pfx
+credentials*.json
+secrets/
+signing/
+release.keystore
+
+# ---------------------------------------------------------------------------
+# 5. 设备与调试产物
+# ---------------------------------------------------------------------------
+
+*.log
+logs/
+logcat*.txt
+*.hprof
+captures/
+crash-reports/
+tmp/
+.tmp-*
+*.swp
+
+# ---------------------------------------------------------------------------
+# 6. Node / 编辑器 / 系统
+# ---------------------------------------------------------------------------
+
+node_modules/
+.npm/
+.eslintcache
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.iml
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+
+# ---------------------------------------------------------------------------
+# 7. 项目特有：临时与本地文件
+# ---------------------------------------------------------------------------
+
+# 本地构建配置覆盖
+build.local.sh
+*.local.sh
+
+# 调试标记文件（若误生成在工作区）
+debug-startup-trace
+debug-spawn-log
+
+# ============================================================================
+# 自检（建仓后执行，预期：无输出）
+#   git status --short | grep -E "\.pkg$|\.apk$|node_modules|/build/|/build-env/"
+# 体积自检（预期：size-pack < 20 MB）
+#   git count-objects -vH
+# 规则自检（逐条验证，预期 18/18 通过）：
+#   git check-ignore -v build/x  build-env/x  android/app/build/x  \
+#     android/app/src/main/assets/runtime.pkg  runtime/node_modules/x  \
+#     runtime/upstream/src/a.ts  runtime/dist/cli.js  .env  \
+#     local.properties  release.keystore  credentials.json
+#   git check-ignore -v runtime/build/build.mjs runtime/compat/bun-shim.ts   # 期望：不匹配
+# ============================================================================

@@ -1,0 +1,135 @@
+name: 🐞 Bug 报告
+description: 报告一个可复现的缺陷（请务必填写环境信息）
+title: "[Bug] "
+labels: ["bug", "needs-info"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 提交前请先确认
+
+        - [ ] 我已搜索过现有 Issue，未发现重复
+        - [ ] 我已阅读 README 与 docs/ 中的说明
+        - [ ] **这不是安全问题**（安全问题请走 SECURITY.md 的私密渠道，不要在此提交）
+
+        本项目 90% 的"跑不起来"源于设备环境差异。**缺少环境信息的 Issue 会被打上 `needs-info` 标签，7 天内未补充将关闭**（可补充后重开）。
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 问题描述
+      description: 期望行为 vs 实际行为
+      placeholder: |
+        期望：应用启动后能正常打开工作台
+        实际：启动后卡在加载页，10 分钟后仍是白屏
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤（最小化）
+      placeholder: |
+        1. 全新安装 v1.0.0
+        2. 打开应用
+        3. 等待 10 分钟
+        4. 观察：白屏
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: 机型与 ROM
+      description: 例如：华为 Mate 60 / HarmonyOS 4.0
+      placeholder: "品牌 型号 / ROM 版本"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: android-version
+    attributes:
+      label: Android 版本
+      options:
+        - Android 12
+        - Android 13
+        - Android 14
+        - Android 15
+        - Android 11 或更低
+        - 其他（请在下方补充）
+    validations:
+      required: true
+
+  - type: dropdown
+    id: abi
+    attributes:
+      label: CPU 架构（ABI）
+      options:
+        - arm64-v8a
+        - armeabi-v7a
+        - x86_64
+        - 不确定
+    validations:
+      required: true
+
+  - type: input
+    id: app-version
+    attributes:
+      label: 应用版本 + RUNTIME_VERSION
+      description: 在「设置 → 关于」中查看
+      placeholder: "v1.0.0 / RUNTIME_VERSION=2"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: shizuku
+    attributes:
+      label: 是否安装并授权了 Shizuku / 群星之眼
+      options:
+        - "是，已授权"
+        - "是，但未授权"
+        - "否，未安装"
+        - "不确定"
+    validations:
+      required: true
+
+  - type: input
+    id: workspace
+    attributes:
+      label: 工作区路径
+      description: 是否使用了默认的 /storage/emulated/0/cc-haha
+      placeholder: "/storage/emulated/0/cc-haha"
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志
+      description: |
+        请附上 logcat 输出：
+        ```
+        adb logcat -s MainActivity ServerService:V *:S > log.txt
+        ```
+        ⚠️ 提交前请检查日志中**是否包含 API Key 或隐私内容**，如有请删除对应行。
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: debug-flags
+    attributes:
+      label: 是否启用了调试埋点
+      description: 在应用私有目录 files/ 下创建对应标记文件后重启应用
+      options:
+        - label: 已启用 debug-startup-trace（启动耗时分段）
+        - label: 已启用 debug-spawn-log（子进程日志）
+        - label: 均未启用
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: 补充信息
+      description: 截图、录屏、已尝试过的排查方式等
+    validations:
+      required: false

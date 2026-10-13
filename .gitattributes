@@ -1,0 +1,25 @@
+# 统一换行符（跨平台一致，避免 CRLF 污染 diff）
+* text=auto eol=lf
+
+# 二进制文件（不做换行符转换与 diff）
+*.pkg   binary
+*.apk   binary
+*.aab   binary
+*.jar   binary
+*.so    binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.zip   binary
+*.gz    binary
+*.deb   binary
+
+# 语言标注（GitHub 会把 .kt 正确识别为 Kotlin）
+*.kt    linguist-language=Kotlin
+*.kts   linguist-language=Kotlin

@@ -1,0 +1,100 @@
+# ── 构建环境（体积巨大，由使用者自行准备）────────────────
+build-env/
+# 前导斜杠不能省：只排除【根目录】的 build/，
+# 否则会连带排除 runtime/build/（内核构建脚本，必须入仓）
+/build/
+
+# ── 依赖 ────────────────────────────────────────────────
+node_modules/
+.pnpm-store/
+
+# ── Android 构建产物 ─────────────────────────────────────
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.cxx/
+android/captures/
+*.apk
+*.aab
+*.keystore
+*.jks
+
+# ── 运行时/工具链资产（300MB+，用脚本生成，勿入仓）────────
+#   生成：bash build-apk.sh（或单独跑 tools/fetch-node.mjs + tools/fetch-toolchain.mjs）
+android/app/src/main/assets/*.pkg
+build/termux-node/
+build/termux-node-cache/
+build/toolchain-cache/
+build/toolchain-staging/
+build/runtime-staging/
+build/stellar/
+build/stareye/
+build/optional-pkgs/
+
+# ── 上游文档（98MB，含大量截图；需要时见上游仓库）────────
+#   如需一并公开上游文档，删除下面这行即可
+runtime/upstream/docs/
+
+# ── 上游内核源码（本仓库不分发）─────────────────────────
+#   runtime/upstream/src/ 是 cc-haha 的上游内核，与 Anthropic 的专有实现
+#   高度一致，本仓库不复制、不分发它。首次启动时由用户在设备上自行获取：
+#     · GitCode 镜像（AtomGit 平台自动同步）—— 见 KernelInstaller.kt
+#     · 或用户自备的源码压缩包（引导页的「本地压缩包」通道）
+#   说明：desktop/ 与 adapters/ 是 cc-haha 的原创部分（MIT），保留以便
+#   使用者构建 H5 工作台与 IM 适配器。
+runtime/upstream/src/
+
+# ── 上游非构建必需目录 ──────────────────────────────────
+#   构建入口只有 src/（已排除）与 adapters/；desktop/ 也不引用下列目录。
+#   它们是 cc-haha 的项目基础设施（CI 脚本、官网、发布说明、macOS 原生组件、
+#   单元测试等），本移植不构建、不分发。
+runtime/upstream/scripts/
+runtime/upstream/native/
+runtime/upstream/site/
+runtime/upstream/release-notes/
+runtime/upstream/tests/
+runtime/upstream/runtime/
+runtime/upstream/stubs/
+runtime/upstream/bin/
+runtime/upstream/fixtures/
+runtime/upstream/preload.ts
+runtime/upstream/issue-triage-after-v0.5.5.md
+
+# ── Node 打包产物（含 minify/split 中间产物）─────────────
+runtime/dist/
+# 上游 desktop 的 Electron 打包配置（本移植只用 H5，用不到）
+runtime/upstream/desktop/build/
+runtime/upstream/desktop/dist/
+runtime/upstream/desktop/src-tauri/resources/preview-agent.js
+runtime/upstream/desktop/tsconfig.tsbuildinfo
+
+# ── 日志与临时文件 ──────────────────────────────────────
+*.log
+logs/
+tmp/
+.tmp/
+*.tmp
+*.bak
+*.orig
+
+# ── IDE / 编辑器 ────────────────────────────────────────
+.idea/
+*.iml
+.vscode/
+!.vscode/extensions.json
+*.swp
+*~
+
+# ── 操作系统 ────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── 本地配置与密钥（切勿提交）──────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+secrets.json

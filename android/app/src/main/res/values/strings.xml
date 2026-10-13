@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">cc-haha</string>
+    <string name="notification_channel_server">cc-haha 服务</string>
+    <string name="notification_running">cc-haha 正在运行</string>
+    <string name="notification_tap_open">点按打开工作台</string>
+    <string name="notification_stop">停止服务</string>
+    <string name="setting_title">cc-haha 设置</string>
+</resources>

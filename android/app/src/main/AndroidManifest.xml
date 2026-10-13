@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <!-- 工作区默认在 /storage/emulated/0/cc-haha（用户可用文件管理器访问）。
+         注意不能加 maxSdkVersion="28"：该属性是绝对 API 号，会让权限在
+         Android 12（API 31）设备上完全不声明，导致外部存储不可写。
+         targetSdk=28 时 Android 11+ 仍保留 legacy 存储访问。 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".CcHahaApp"
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="cc-haha"
+        android:theme="@style/Theme.CcHaha"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:largeHeap="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize|uiMode"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="设置" />
+
+        <!-- 内核引导页：APK 不再内置内核产物，首次使用在此获取源码并构建 -->
+        <activity
+            android:name=".KernelSetupActivity"
+            android:exported="false"
+            android:label="内核准备"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize|uiMode"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- 关于页：上游 cc-haha / 本项目 / 支持开发者 三种模式 -->
+        <activity
+            android:name=".AboutActivity"
+            android:exported="false"
+            android:label="关于"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize|uiMode" />
+
+        <service
+            android:name=".ServerService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+        <!-- Shizuku：提供 shell 级权限申请通道（用户需自行安装 Shizuku App） -->
+        <provider
+            android:name="rikka.shizuku.ShizukuProvider"
+            android:authorities="${applicationId}.shizuku"
+            android:enabled="true"
+            android:exported="true"
+            android:multiprocess="false"
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    </application>
+</manifest>
